@@ -23,7 +23,6 @@ import { registerIpcMain } from '@ui-tars/electron-ipc/main';
 import { ipcRoutes } from './ipcRoutes';
 
 import { store } from './store/create';
-import { SettingStore } from './store/setting';
 import { createTray } from './tray';
 import { registerSettingsHandlers } from './services/settings';
 import { sanitizeState } from './utils/sanitizeState';
@@ -143,7 +142,6 @@ const initializeApp = async () => {
   });
 
   logger.info('initializeApp end');
-
 };
 
 /**

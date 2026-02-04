@@ -100,15 +100,12 @@ export function ShareOptions({ sessionId }: { sessionId: string }) {
       let uploadSuccess = false;
 
       if (allowCollectShareReport) {
-        let reportUrl: string | undefined;
-
         if (settings?.reportStorageBaseUrl) {
           try {
             const { url } = await uploadReport(
               htmlContent,
               settings.reportStorageBaseUrl,
             );
-            reportUrl = url;
             uploadSuccess = true;
             await navigator.clipboard.writeText(url);
             toast.success('Report link copied to clipboard!');
@@ -120,7 +117,6 @@ export function ShareOptions({ sessionId }: { sessionId: string }) {
             });
           }
         }
-
       }
 
       // Only fall back to file download if upload was not configured or failed

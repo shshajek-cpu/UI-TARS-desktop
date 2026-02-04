@@ -28,7 +28,6 @@ import { reportHTMLContent } from '@renderer/utils/html';
 import { uploadReport } from '@renderer/utils/share';
 import { useStore } from '@renderer/hooks/useStore';
 import { useSetting } from '@renderer/hooks/useSetting';
-import { IMAGE_PLACEHOLDER } from '@ui-tars/shared/constants';
 // import { useScreenRecord } from '@renderer/hooks/useScreenRecord';
 import { useSession } from '@renderer/hooks/useSession';
 import dayjs from 'dayjs';
@@ -51,11 +50,6 @@ export function ShareOptions() {
   const shareTimeoutRef = useRef<NodeJS.Timeout>(null);
 
   const running = status === StatusEnum.RUNNING;
-  const lastHumanMessage =
-    [...(chatMessages || [])]
-      .reverse()
-      .find((m) => m?.from === 'human' && m?.value !== IMAGE_PLACEHOLDER)
-      ?.value || '';
 
   const processShare = async (
     type: 'report' | 'video',
@@ -105,15 +99,12 @@ export function ShareOptions() {
         let uploadSuccess = false;
 
         if (allowCollectShareReport) {
-          let reportUrl: string | undefined;
-
           if (settings?.reportStorageBaseUrl) {
             try {
               const { url } = await uploadReport(
                 htmlContent,
                 settings.reportStorageBaseUrl,
               );
-              reportUrl = url;
               uploadSuccess = true;
               await navigator.clipboard.writeText(url);
               toast.success('Report link copied to clipboard!');
@@ -127,7 +118,6 @@ export function ShareOptions() {
               });
             }
           }
-
         }
 
         // Only fall back to file download if upload was not configured or failed
