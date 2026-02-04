@@ -5,8 +5,6 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from 'electron';
 // import { preloadZustandBridge } from 'zutron/preload';
 
-import type { UTIOPayload } from '@ui-tars/utio';
-
 import type { AppState, LocalStore } from '@main/store/types';
 
 export type Channels = '';
@@ -30,10 +28,6 @@ const electronHandler = {
     once(channel: Channels, func: (...args: unknown[]) => void) {
       ipcRenderer.once(channel, (_event, ...args) => func(...args));
     },
-  },
-  utio: {
-    shareReport: (params: UTIOPayload<'shareReport'>) =>
-      ipcRenderer.invoke('utio:shareReport', params),
   },
   setting: {
     getSetting: () => ipcRenderer.invoke('setting:get'),

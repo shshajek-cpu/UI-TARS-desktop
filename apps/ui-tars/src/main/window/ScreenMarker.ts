@@ -59,7 +59,7 @@ class ScreenMarker {
       thickFrame: false,
       paintWhenInitiallyHidden: true,
       type: 'panel',
-      webPreferences: { nodeIntegration: true, contextIsolation: false },
+      webPreferences: { nodeIntegration: false, contextIsolation: true },
     });
 
     this.screenWaterFlow.setFocusable(false);
@@ -161,7 +161,7 @@ class ScreenMarker {
       webPreferences: {
         preload: path.join(__dirname, '../preload/index.js'),
         sandbox: false,
-        webSecurity: !!env.isDev,
+        webSecurity: true,
       },
     });
 
@@ -226,7 +226,7 @@ class ScreenMarker {
           thickFrame: false,
           paintWhenInitiallyHidden: true,
           type: 'panel',
-          webPreferences: { nodeIntegration: true, contextIsolation: false },
+          webPreferences: { nodeIntegration: false, contextIsolation: true },
           ...(overlay.xPos &&
             overlay.yPos && {
               // logical pixels

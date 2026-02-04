@@ -121,19 +121,6 @@ export function ShareOptions({ sessionId }: { sessionId: string }) {
           }
         }
 
-        // Only send UTIO data if user consented
-        if (settings?.utioBaseUrl) {
-          const lastScreenshot = chatMessages
-            .filter((m) => m.screenshotBase64)
-            .pop()?.screenshotBase64;
-
-          await window.electron.utio.shareReport({
-            type: 'shareReport',
-            instruction: lastHumanMessage,
-            lastScreenshot,
-            report: reportUrl,
-          });
-        }
       }
 
       // Only fall back to file download if upload was not configured or failed
