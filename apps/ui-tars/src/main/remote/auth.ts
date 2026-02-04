@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { app } from 'electron';
 // import { SignJWT, importPKCS8, generateKeyPair } from 'jose';
-import { machineId } from 'node-machine-id';
+import { createHash } from 'crypto';
 import { AxiosRequestConfig } from 'axios';
 import { generateKeyPairSync } from 'crypto';
 import { appPrivateKeyBase64 } from './app_private';
@@ -101,7 +101,8 @@ async function getAuthHeader() {
 let cachedDeviceId: string | null = null;
 async function getDeviceId(): Promise<string> {
   if (!cachedDeviceId) {
-    cachedDeviceId = await machineId();
+    const hostname = require('os').hostname();
+    cachedDeviceId = createHash('sha256').update(hostname).digest('hex');
     logger.log('[Auth] getDeviceId:', cachedDeviceId);
   }
   return cachedDeviceId;

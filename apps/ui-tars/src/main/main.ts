@@ -22,7 +22,6 @@ import { createMainWindow } from '@main/window/index';
 import { registerIpcMain } from '@ui-tars/electron-ipc/main';
 import { ipcRoutes } from './ipcRoutes';
 
-import { UTIOService } from './services/utio';
 import { store } from './store/create';
 import { SettingStore } from './store/setting';
 import { createTray } from './tray';
@@ -92,9 +91,6 @@ const initializeApp = async () => {
   // Tray
   await createTray();
 
-  // Send app launched event
-  await UTIOService.getInstance().appLaunched();
-
   logger.info('createMainWindow');
   let mainWindow = createMainWindow();
 
@@ -148,18 +144,6 @@ const initializeApp = async () => {
 
   logger.info('initializeApp end');
 
-  // Check and update remote presets
-  const settings = SettingStore.getStore();
-  if (
-    settings.presetSource?.type === 'remote' &&
-    settings.presetSource.autoUpdate
-  ) {
-    try {
-      await SettingStore.importPresetFromUrl(settings.presetSource.url!, true);
-    } catch (error) {
-      logger.error('Failed to update preset:', error);
-    }
-  }
 };
 
 /**
@@ -189,11 +173,6 @@ const registerIPCHandlers = (
   const unsubscribe = store.subscribe((state: unknown) =>
     ipcMain.emit('subscribe', state),
   );
-
-  // TODO: move to ipc routes
-  ipcMain.handle('utio:shareReport', async (_, params) => {
-    await UTIOService.getInstance().shareReport(params);
-  });
 
   registerSettingsHandlers();
   // register ipc services routes

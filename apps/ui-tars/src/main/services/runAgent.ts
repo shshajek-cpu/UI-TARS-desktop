@@ -9,7 +9,6 @@ import { StatusEnum } from '@ui-tars/shared/types';
 import { type ConversationWithSoM } from '@main/shared/types';
 import { GUIAgent, type GUIAgentConfig } from '@ui-tars/sdk';
 import { markClickPosition } from '@main/utils/image';
-import { UTIOService } from '@main/services/utio';
 import { NutJSElectronOperator } from '../agent/operator';
 import {
   createRemoteBrowserOperator,
@@ -231,7 +230,6 @@ export const runAgent = async (
   });
 
   GUIAgentManager.getInstance().setAgent(guiAgent);
-  UTIOService.getInstance().sendInstruction(instructions);
 
   const { sessionHistoryMessages } = getState();
 
